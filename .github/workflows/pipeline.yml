@@ -38,6 +38,7 @@ jobs:
           if_mention: success
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: success()
       # Increase the version when a pull request is merged into the main branch
       - name: Bump version and push tag
         # Commit with hash -> uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
