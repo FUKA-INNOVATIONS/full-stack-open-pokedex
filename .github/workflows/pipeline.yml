@@ -12,7 +12,6 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-18.04
     steps:
-      # The uses keyword tells the workflow to run a specific action
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
