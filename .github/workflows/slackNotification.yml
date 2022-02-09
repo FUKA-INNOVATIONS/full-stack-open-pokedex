@@ -1,20 +1,12 @@
-
-name: Deployment pipeline
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: [ master ]
-    types: [ opened, synchronize ]
-
+on: push
+name: Slack Notification Demo
 jobs:
-  SuccessNoticifation:
-    - uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        fields: job,repo,message,commit,author,took
-        if_mention: success
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
