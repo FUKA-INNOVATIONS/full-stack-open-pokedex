@@ -30,6 +30,15 @@ jobs:
           healthcheck: "https://cicd-fullstackopen.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
+      # Build success/failure notification action, Slack notification
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,took
+          if_mention: failure,success
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
       # Increase the version when a pull request is merged into the main branch
       - name: Bump version and push tag
         # Commit with hash -> uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
@@ -37,15 +46,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: "patch"
-      # Build success/failure notification action, Slack notification
-      - uses: 8398a7/action-slack@v3
-          with:
-            status: ${{ job.status }}
-            fields: repo,message,commit,author,took
-            if_mention: failure,success
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-          if: always() # Pick up events even if the job fails or is canceled.
       - name: npm install
         run: npm install
       - name: lint
