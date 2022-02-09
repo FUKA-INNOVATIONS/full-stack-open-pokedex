@@ -1,0 +1,20 @@
+
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize ]
+
+jobs:
+  SuccessNoticifation:
+    - uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        fields: job,repo,message,commit,author,took
+        if_mention: success
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
