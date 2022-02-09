@@ -53,11 +53,11 @@ jobs:
           wait-on: http://localhost:4000
 
         # Build success/failure notification action, Slack notification
-        - name: Slack notifications
-          uses: 8398a7/action-slack@v3
-            with:
-              status: ${{ job.status }}
-              fields: repo,message,commit,author,took
-              if_mention: success, failure
-            env:
-              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        - uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,took
+            if_mention: success
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          if: success()
