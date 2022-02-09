@@ -40,9 +40,9 @@ jobs:
       # Build success/failure notification action, Slack notification
       - uses: 8398a7/action-slack@v3
           with:
-            status: ${{ job.status === 'success' }}
-            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
-            #if_mention: failure,success
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,took
+            if_mention: failure,success
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
           if: always() # Pick up events even if the job fails or is canceled.
