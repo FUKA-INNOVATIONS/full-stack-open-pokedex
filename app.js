@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 
-console.log('simulate lint failure')
-
 // Heroku dynamically sets a port
 const PORT = process.env.PORT || 4000
 
