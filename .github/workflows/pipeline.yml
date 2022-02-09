@@ -32,14 +32,14 @@ jobs:
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
       # Build success/failure notification action, Slack notification
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,took
-          if_mention: failure
+      - name: Slack error notification
+        uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
+        if: failure()
       # Increase the version when a pull request is merged into the main branch
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
